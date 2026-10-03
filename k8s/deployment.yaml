@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pawploy-connector
+  namespace: pawploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pawploy-connector
+  template:
+    metadata:
+      labels:
+        app: pawploy-connector
+    spec:
+      serviceAccountName: pawploy-connector
+      containers:
+        - name: connector
+          image: pawploy-connector:dev
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: connector-aws
+            - secretRef:
+                name: connector-config
+          env:
+            - name: ONPREM_NAMESPACE
+              value: pawploy
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

@@ -1,0 +1,6 @@
+.connector-credentials.json
+.env
+.env.*
+!.env.example
+__pycache__/
+.venv/
